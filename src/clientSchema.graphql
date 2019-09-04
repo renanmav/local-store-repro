@@ -1,0 +1,7 @@
+type Menu {
+  isOpen: Boolean!
+}
+
+extend type Query {
+  menu: Menu!
+}
