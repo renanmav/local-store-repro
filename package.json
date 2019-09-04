@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.5.5",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
     "@svgr/webpack": "4.3.2",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.4",
@@ -15,6 +17,8 @@
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.6",
     "babel-plugin-named-asset-import": "^0.3.3",
+    "babel-plugin-relay": "^5.0.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-preset-react-app": "^9.0.1",
     "camelcase": "^5.2.0",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
@@ -31,6 +35,7 @@
     "eslint-plugin-react-hooks": "^1.6.1",
     "file-loader": "3.0.1",
     "fs-extra": "7.0.1",
+    "graphql": "^14.5.4",
     "hoist-non-react-statics": "^3.3.0",
     "html-webpack-plugin": "4.0.0-beta.5",
     "identity-obj-proxy": "3.0.0",
@@ -51,8 +56,8 @@
     "react-app-polyfill": "^1.0.2",
     "react-dev-utils": "^9.0.3",
     "react-dom": "^16.9.0",
-    "react-relay": "^5.0.0",
-    "relay-runtime": "^5.0.0",
+    "react-relay": "4.0.0",
+    "relay-runtime": "4.0.0",
     "resolve": "1.12.0",
     "resolve-url-loader": "3.1.0",
     "sass-loader": "7.2.0",
@@ -60,7 +65,7 @@
     "style-loader": "1.0.0",
     "terser-webpack-plugin": "1.4.1",
     "ts-pnp": "1.1.2",
-    "typescript": "3.6.2",
+    "typescript": "^3.6.2",
     "url-loader": "2.1.0",
     "webpack": "4.39.1",
     "webpack-dev-server": "3.2.1",
@@ -71,7 +76,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "relay": "relay-compiler --src ./src --schema ./schema.graphql"
+    "relay": "relay-compiler --watchman false --src ./src --schema ./data/schema.graphql --language typescript"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -92,9 +97,8 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/react-relay": "^5.0.0",
     "@types/relay-runtime": "^5.0.3",
-    "babel-plugin-relay": "^5.0.0",
-    "graphql": "^14.5.4",
-    "relay-compiler": "^5.0.0",
+    "relay-compiler": "^4.0.0",
+    "relay-compiler-language-typescript": "^4.7.0",
     "relay-devtools": "^1.4.0"
   },
   "jest": {
@@ -143,11 +147,6 @@
     "watchPlugins": [
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
-    ]
-  },
-  "babel": {
-    "presets": [
-      "react-app"
     ]
   }
 }

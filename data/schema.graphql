@@ -1,420 +1,153 @@
-"""Dados das contas do usuário"""
-type Accounts {
-  for_payments: Boolean
-  is_third: Boolean
-  default: Boolean
-  _id: String
-  bank: String
-  agency: String
-  account: String
-  codigo: String
-  ispb: String
-  account_type: String
-  name: String
-  document: String
-}
-
-"""Dados para validar o processo de integração das maquininhas"""
-type Accreditation {
-  internal_data: Boolean
-  acquirer: Boolean
-  software_house: Boolean
-  terminal: Boolean
-  machine_monthly_value: Float
-  automatic_advance: Boolean
-  automatic_withdrawal: Boolean
-  monthly_goal: Float
-  is_custom_advance_rate: Boolean
-  custom_advance_rate: Float
-}
-
-"""Ramo de atividade do usuário"""
-type Activity {
-  custom_activity: Boolean
-  brand_rates: [BrandRate]
-}
-
-"""Dados de endereço do usuário"""
-type Address {
-  city: String
-  state: String
-  uf: String
-  ibge_code: Int
-  country: String
-  zip_code: String
-  street: String
-  number: String
-  district: String
-  complement: String
-}
-
-"""Retorna se o usuário é admin e suas respectivas permissões"""
-type Admin {
-  is_active: Boolean
-  permissions: [String]
-}
-
-"""Dados sobre o saldo do usuário"""
-type Balance {
-  balance: Float
-  balance_blocked: Float
-  balance_future: Float
-  balance_giftcard: Float
-}
-
-"""Valores cobrados por bandeira das maquininhas"""
-type BrandRate {
-  brand: String
-  debit_rate: Float
-  credit_rate: Float
-  credit_rate_2_6: Float
-  credit_rate_7_12: Float
-}
-
-"""Dados de pagamento no cartão"""
-type CardPayments {
-  is_active: Boolean
-  rate: Float
-  advance_rate: Float
-}
-
-input CheckTokenInput {
-  token: String!
-  clientMutationId: String
-}
-
-type CheckTokenPayload {
-  message: Message
-  user: String
-  clientMutationId: String
-}
-
-"""Dados pra customização dos boletos"""
-type Customization {
-  custom_logo: Boolean
-  text_color: String
-  line_1: String
-  line_2: String
-  line_3: String
-  line_4: String
-  line_5: String
-}
-
-"""Documentos do usuário (RG, CPF)"""
-type Document {
-  document: String
-  type: String
-}
-
-"""Dados do e-commerce"""
-type ECommerce {
-  is_active: Boolean
-  api_key: [String]
-}
-
-"""Retorna um email e se ele foi verificado"""
-type Email {
-  email: String
-  verified: Boolean
-}
-
-"""Dados do extrato do usuário"""
-type Extract implements Node {
-  """The ID of an object"""
-  id: ID!
-  type: String
-  status: String
-  value: Int
-  description: String
-  registered: String
-  urpay_transfer: UrpayTransfer
-}
-
-"""Dados dos arquivos de validação"""
-type File {
-  file_type: String
-  is_administrator: Boolean
-  name: String
-  path: String
-  code: String
-  code_is_valid: Boolean
-  is_valid: Boolean
-  description: String
-  automatic_validation: Boolean
-  similarity: Float
-  administrator_document: String
-  updated: String
-  registered: String
-  _id: String
-  type: String
-}
-
-"""Dados das imagens do usuário"""
-type Images {
-  profile: Profile
-}
-
-input LastInAndOutInput {
-  clientMutationId: String
-}
-
-type LastInAndOutPayload {
-  lastIn: Extract
-  lastOut: Extract
-  clientMutationId: String
-}
-
-"""Message returned from the server"""
-type Message {
-  title: String
-  message: String
-}
-
-"""Dados de pagamento mensais"""
-type MonthlyPayment {
-  custom_payment: Boolean
-  value: Float
-}
-
 type Mutation {
-  """
-  User login with username and password receives a token and a refresh token
-  """
-  UserLogin(input: UserLoginInput!): UserLoginPayload
-
-  """Makes the token provided invalid"""
-  UserLogout(input: UserLogoutInput!): UserLogoutPayload
-
-  """Register a user if doesn't exists"""
-  UserRegister(input: UserRegisterInput!): UserRegisterPayload
-
-  """Verifies if the token is valid and return the user"""
-  CheckToken(input: CheckTokenInput!): CheckTokenPayload
-
-  """Retorna a última entrada e saída de saldo do usuário"""
-  LastInAndOut(input: LastInAndOutInput!): LastInAndOutPayload
+  UserChangePassword(input: UserChangePasswordInput!): UserChangePasswordPayload
+  UserLoginWithEmail(input: UserLoginWithEmailInput!): UserLoginWithEmailPayload
+  UserRegisterWithEmail(input: UserRegisterWithEmailInput!): UserRegisterWithEmailPayload
 }
 
-"""An object with an ID"""
+"""
+An object with an ID
+"""
 interface Node {
-  """The id of the object."""
+  """
+  The id of the object.
+  """
   id: ID!
 }
 
-"""Dados da senha do usuário"""
-type Password {
-  two_factors: TwoFactors
-  requested_change: Boolean
-  last_change: String
-  login_attempts: Int
-}
+"""
+Information about pagination in a connection.
+"""
+type PageInfoExtended {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
 
-"""Dados dos pagamentos das maquininhas"""
-type PaymentMachines {
-  serial: String
-  rent_value: Float
-  rent_day: Int
-  token_machine: String
-  was_bought: Boolean
-  is_buy_confirmed: Boolean
-  confirmation_date: String
-  processed_subregion: Boolean
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
 }
-
-"""Dados do telefone do usuário"""
-type Phone {
-  phone: String
-  last_send_verification_code: String
-  count_send_verification_code: Int
-  verification_code: String
-  verified: Boolean
-  phone_change: String
-  verification_code_change: String
-}
-
-"""Dados do plano do usuário"""
-type Plan {
-  custom_plan: Boolean
-  name: String
-  rate: Float
-  ted: Float
-  recharge_ticket: Float
-  recharge_card_credit: Float
-  transfer_users_urpay: Float
-}
-
-"""Dados da foto de perfil do usuário"""
-type Profile {
-  updated: String
-  profile: String
-}
-
-"""The root of all queries"""
+"""
+The root of all... queries
+"""
 type Query {
-  """Fetches an object given its ID"""
+  """
+  Fetches an object given its ID
+  """
   node(
-    """The ID of an object"""
+    """
+    The ID of an object
+    """
     id: ID!
   ): Node
-  user(user: String): User
-  extract(page: Int!, results: Int!): [Extract]
+  me: User
+  user(id: ID!): User
+  users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
 }
-
-"""Taxas para emissão dos boletos de cobrança"""
-type Rates {
-  emission: RatesValues
-  liquidation: RatesValues
-  commercial: RatesValues
+type Subscription {
+  UserAdded: UserAddedPayload
 }
-
-type RatesValues {
-  value: Float
-}
-
-"""Dados dos acessos à conta do usuário"""
-type Sessions {
-  id_device: String
-  description: String
-  ip: String
-  browser: String
-  platform: String
-  token: String
-  refresh_token: String
-  token_life_time: Int
-  trusted: Boolean
-  registered: String
-  updated: String
-  expires_in: String
-}
-
-"""Informações para gerar boletos de cobrança"""
-type Ticket {
-  rates: Rates
-  customization: Customization
-  recharge_is_active: Boolean
-  is_active: Boolean
-  payment_days: Int
-  is_custom_limit: Boolean
-  custom_limit: Float
-}
-
-"""Dados da autenticação de dois fatores"""
-type TwoFactors {
-  is_active: Boolean
-  disable_attempts: Int
-  type: String
-}
-
-"""Dados da transferência"""
-type UrpayTransfer {
-  send_to: User
-  send_from: User
-}
-
-"""User data"""
+"""
+User data
+"""
 type User implements Node {
-  """The ID of an object"""
+  """
+  The ID of an object
+  """
   id: ID!
   _id: String
   name: String
-  user: String
-  document: Document
-  email: Email
-  birthday: String
-  gender: String
-  is_international: Boolean
-  is_commercial: Boolean
-  is_partner: Boolean
-  is_active: Boolean
-  is_blocked: Boolean
-  blocked_by_user: Boolean
-  receipts_blocked: Boolean
-  verified_account: Boolean
-  updated: String
-  registered: String
-  latitude: Float
-  longitude: Float
-  user_number: String
-  ticket: Ticket
-  withdrawal_bank: WithdrawalBank
-  monthly_payment: MonthlyPayment
-  activity: Activity
-  card_payments: CardPayments
-  admin: Admin
-  plan: Plan
-  password: Password
-  e_commerce: ECommerce
-  validation: Validation
-  accreditation: Accreditation
-  phone: Phone
-  address: Address
-  images: Images
-  balance: Balance
-  accounts: [Accounts]
-  payment_machines: [PaymentMachines]
-  sessions: [Sessions]
+  email: String
+  active: Boolean
 }
-
-input UserLoginInput {
-  user: String!
-  pass: String!
-  device_id: String!
-  description: String!
-  platform: String!
-  token_like_time: Int!
-  clientMutationId: String
+type UserAddedPayload {
+  userEdge: UserEdge
 }
-
-type UserLoginPayload {
-  message: Message
-  token: String
-  refreshToken: String
-  permissions: [String]
-  clientMutationId: String
-}
-
-input UserLogoutInput {
-  token: String!
-  clientMutationId: String
-}
-
-type UserLogoutPayload {
-  message: Message
-  clientMutationId: String
-}
-
-input UserRegisterInput {
-  user: String!
-  name: String!
+input UserChangePasswordInput {
+  oldPassword: String!
+  """
+  user new password
+  """
   password: String!
-  confirm_password: String!
+  clientMutationId: String
+}
+type UserChangePasswordPayload {
+  error: String
+  me: User
+  clientMutationId: String
+}
+"""
+A connection to a list of items.
+"""
+type UserConnection {
+  """
+  Number of items in this connection
+  """
+  count: Int!
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+  """
+  Offset from start
+  """
+  startCursorOffset: Int!
+  """
+  Offset till end
+  """
+  endCursorOffset: Int!
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfoExtended!
+  """
+  A list of edges.
+  """
+  edges: [UserEdge]!
+}
+"""
+An edge in a connection.
+"""
+type UserEdge {
+  """
+  The item at the end of the edge
+  """
+  node: User!
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+input UserLoginWithEmailInput {
   email: String!
-  phone: String!
-  is_international: Boolean!
+  password: String!
   clientMutationId: String
 }
-
-type UserRegisterPayload {
-  message: Message
-  errors: [String]
+type UserLoginWithEmailPayload {
+  token: String
+  error: String
   clientMutationId: String
 }
-
-"""Dados de validação do usuário"""
-type Validation {
-  is_valid: Boolean
-  files: [File]
+input UserRegisterWithEmailInput {
+  name: String!
+  email: String!
+  password: String!
+  clientMutationId: String
 }
-
-"""Dados de retirada bancária (TED)"""
-type WithdrawalBank {
-  is_active: Boolean
-  custom_rate: Boolean
-  rate: Float
-  custom_third_rate: Boolean
-  third_rate: Float
-  custom_limit: Boolean
-  limit: Float
-  third_enabled: Boolean
-  automatic_credit_input_bank: Boolean
+type UserRegisterWithEmailPayload {
+  token: String
+  error: String
+  clientMutationId: String
 }
